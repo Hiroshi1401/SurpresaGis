@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Oii, to com sdds</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(-45deg, #540228, #7d2ae8, #1e1e2f, #ff4f81);
+      background-size: 400% 400%;
+      animation: gradient 10s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      cursor: default;
+    }
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    * { text-decoration: none; box-sizing: border-box; }
+
+    .box {
+      font-size: 20px;
+      width: 420px;
+      border-radius: 20px;
+      background: rgba(25, 25, 25, 0.85);
+      box-shadow: 0 0 20px rgba(255, 0, 120, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      animation: fadeIn 1.5s ease-in-out;
+      z-index: 2; /* garante que fique acima das estrelas */
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .box p {
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+    .heart {
+      display: inline-block;
+      color: red;
+      animation: pulse 1s infinite alternate;
+    }
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.3); }
+    }
+    .button-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+    }
+    button {
+      height: 50px;
+      width: 90px;
+      background: #fff;
+      border-radius: 10px;
+      border: none;
+      color: #171331;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      transform: scale(1.1);
+      background: #ff0078;
+      color: #fff;
+      box-shadow: 0 0 15px #ff0078;
+    }
+
+    /* Estrelinhas */
+    .star {
+      position: absolute;
+      top: -10px;
+      width: 3px;
+      height: 3px;
+      background-color: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: fall linear forwards;
+      z-index: 1;
+    }
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <p>
+       Oi oi meu bem,tudo bem?
+      <span class="heart">❤️</span><br>
+      Tua semana ta sendo uma loucura né<br>
+      Mas oq vc acha da gente ir comer alguma coisa na sexta? ou quem sabe sair pra correr dnv?
+  </p>
+    <div class="button-container">
+      <a href="https://www.youtube.com/shorts/XhDJFs-d_04?feature=share" id="yes">
+        <button>BORAA</button>
+      </a>
+      <button id="no">NUNCA</button>
+    </div>
+  </div>
+
+  <!-- Player do YouTube invisível -->
+  <div id="player" style="display:none;"></div>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    let player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '0',
+        width: '0',
+        videoId: 'NvftPSb5Xtw', // ID do vídeo Lofi
+        playerVars: {
+          autoplay: 1,
+          loop: 1,
+          playlist: 'NvftPSb5Xtw',
+          controls: 0,
+          modestbranding: 1,
+          rel: 0
+        },
+        events: {
+          onReady: event => {
+            event.target.mute(); // começa mutado
+            event.target.playVideo();
+          }
+        }
+      });
+    }
+
+    // Libera o som quando clicar em qualquer lugar
+    const unlockAudio = () => {
+      if (player && player.unMute) {
+        player.unMute();
+      }
+    };
+    document.body.addEventListener('click', unlockAudio, { once: true });
+
+    // Botão "NUNCA" fugindo
+    const buttonNo = document.getElementById('no');
+    const height = window.innerHeight - 50;
+    const width = window.innerWidth - 50;
+    buttonNo.addEventListener('mouseover', () => {
+      buttonNo.style.position = 'absolute';
+      buttonNo.style.transition = 'top 0.3s, left 0.3s';
+      buttonNo.style.top = Math.random() * height + 'px';
+      buttonNo.style.left = Math.random() * width + 'px';
+    });
+
+    // Criar estrelinhas caindo
+    function createStar() {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * window.innerWidth + 'px';
+      star.style.animationDuration = (Math.random() * 3 + 2) + 's'; // 2s a 5s
+      document.body.appendChild(star);
+
+      setTimeout(() => star.remove(), 6000);
+    }
+    setInterval(createStar, 150);
+  </script>
+</body>
+</html>
